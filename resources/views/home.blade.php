@@ -3,11 +3,11 @@
 @section('content')
 
 
-
 <div class="container bg-info">
     <div class="row d-flex justify-content-center ">
         <div class="col-md-6 mt-3">
             <p class="border-bottom">username: <b class="text-uppercase">{{ Auth::user()->name }} </b></p>
+            <input type="hidden" name="username" class="username" value="{{ Auth::user()->name }}">
             <div class="card ">
                 <div class="card-body" id="displayMyMessage">
                   <h5 class="border-bottom border-5 text-center">Message Box</h5>
@@ -44,62 +44,21 @@
 </div>
 
 
-
-
-
-
-
-
-
-    {{-- <div class="container">
-        @if (session('status'))
-            <div class="alert alert-success" role="alert">
-                {{ session('status') }}
-            </div>
-        @endif
-
-        <div class="jumbotron">
-            <h5>Welcome, {{ auth()->user()->email }}</h5>
-            <h1 class="display-3">Bootstrap 4 Laravel Fortify Authentication</h1>
-            <p class="lead">This is a simple auth starter setup for laravel 8 projects</p>
-            <hr class="my-4">
-            <h2>Features:</h2>
-            <ul>
-                <li>User Login</li>
-                <li>User Registration</li>
-                <li>Email Verification</li>
-                <li>Forget Password</li>
-                <li>Reset Password IAmServantOfAllah</li>
-            </ul>
-            <p class="lead">
-                <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    Logout
-                  </a>
-    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-            @csrf
-          </form>
-                <a class="btn btn-primary" href="" target="_blank" role="button">Github Source Code</a>
-            </p>
-        </div>
-    </div> --}}
 @endsection
 
 
-
-
 @section('script')
-
-
 
     <script type="text/javascript">
         //send message
         function sendMessage() {
             const myMessage = $('.myMessage').val();
-            //alert(myMessage);
+            const username = $('.username').val();
 
             var url = "send-message";
             axios.post(url, {
-                myMessage: myMessage
+                myMessage: myMessage,
+                username: username
             }).then(function(result) {
                 //alert(result['data']);
                 $('.myMessage').val('');
@@ -126,13 +85,15 @@
             var channel = pusher.subscribe(channelData);
             channel.bind('my-event', function(data) {
                 //alert(data['myMessage']);
-                var displayMyMsg = '<h6 class="border-bottom"> ' +data['myMessage']+ '</h6>'; 
+                //alert(data.myMessage.username)
+                var displayMyMsg = '<h6 class="border-bottom"> ' +data.myMessage.username +' : '+ data.myMessage.myMessage+ '</h6>'; 
                 $('#displayMyMessage').append(displayMyMsg);
 
             });
 
         });
-    </script>
 
+
+    </script>
 
 @endsection

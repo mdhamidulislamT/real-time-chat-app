@@ -9,6 +9,7 @@ use Carbon\Carbon;
 
 class MessageController extends Controller
 {
+
     public function messageBox()
     {
         return view('message-box');
@@ -19,8 +20,9 @@ class MessageController extends Controller
     {
         $channelData = "2022";
         $myMessage = $request->input('myMessage');
-        event(new MyEvent($myMessage, $channelData));
-
+        $data['myMessage'] = $myMessage;
+        $data['username'] = $request->input('username');
+        event(new MyEvent($data, $channelData));
 
         $userId = random_int(1, 10);
 
@@ -38,6 +40,5 @@ class MessageController extends Controller
             ],
         ]);
         return $result;
-
     }
 }
